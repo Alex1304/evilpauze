@@ -1,0 +1,36 @@
+{
+    "bot": {
+        "token": "${token}",
+        "presence": {
+            "status": "do_not_disturb",
+            "activity_type": "watching",
+            "activity_text": "you"
+        },
+        "enabled_intents": 519
+    },
+    "i18n": {
+        "default_locale": "en",
+        "supported_locales": [
+            "en"
+        ]
+    },
+    "command": {
+        "prefix": "+"
+    },
+    "mongodb": {
+        "database_name": "evilpauze",
+        "connection_string": "mongodb://localhost:27017"
+    },
+    "evilpauze": {
+        "gd_server_id": 0,
+        "verification_channel_id": 0,
+        "member_role_id": 0,
+        "verification_message": "verify me",
+        "welcome_message": "Please take five minutes to read over <#671228366606696468>, <#714663070169038879> and <#662753822921326592>, then reply in this channel with `verify me` to enter the server!\n\nIf you are having issues with the verification process, please contact a staff member in DMs so we can verify you manually.",
+        "cooldown_message": "We consider five minutes to be the minimum time you need to properly acknowledge the information channel and the server rules.",
+        "streamer_role_ids": [],
+        "stream_notification_role_id": 0,
+        "staff_role_id": 0,
+        "head_staff_role_id": 0
+    }
+}

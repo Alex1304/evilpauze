@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.alex1304.evilpauze</groupId>
+    <artifactId>evilpauze</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>app</module>
+        <module>delivery</module>
+        <module>launcher</module>
+    </modules>
+
+    <properties>
+        <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <botrino.version>1.0.0-SNAPSHOT</botrino.version>
+        <immutables.version>2.9.0-beta2</immutables.version>
+        <delivery.name>${project.parent.artifactId}-${project.version}</delivery.name>
+        <delivery.directory>${project.build.directory}/${delivery.name}</delivery.directory>
+        <app.build.directory>${project.basedir}/../app/target</app.build.directory>
+        <jlink.jdk>${java.home}</jlink.jdk>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <release>${java.version}</release>
+                        <annotationProcessorPaths>
+                            <annotationProcessorPath>
+                                <groupId>org.immutables</groupId>
+                                <artifactId>value</artifactId>
+                                <version>${immutables.version}</version>
+                            </annotationProcessorPath>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jlink-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <launcher>${project.parent.artifactId}=evilpauze.launcher/evilpauze.Launcher</launcher>
+                        <addModules>
+                            <addModule>java.logging</addModule>
+                            <addModule>jdk.unsupported</addModule>
+                            <addModule>java.xml</addModule>
+                            <addModule>java.naming</addModule>
+                            <addModule>java.desktop</addModule>
+                            <addModule>jdk.crypto.ec</addModule>
+                        </addModules>
+                        <sourceJdkModules>${jlink.jdk}</sourceJdkModules>
+                        <stripDebug>true</stripDebug>
+                        <noHeaderFiles>true</noHeaderFiles>
+                        <noManPages>true</noManPages>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <executions>
+                        <execution>
+                            <id>copy-resources</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${project.build.directory}/resources</outputDirectory>
+                                <propertiesEncoding>ISO-8859-1</propertiesEncoding>
+                                <resources>
+                                    <resource>
+                                        <directory>src/main/external-resources</directory>
+                                        <filtering>true</filtering>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.1.2</version>
+                    <executions>
+                        <execution>
+                            <id>copy-dependencies</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>copy-dependencies</goal>
+                            </goals>
+                            <configuration>
+                                <excludeScope>provided</excludeScope>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <id>antrun-archive</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <delete dir="${delivery.directory}" />
+                                    <delete file="${project.build.directory}/${project.build.finalName}.zip" />
+                                    <move file="${project.build.directory}/maven-jlink" tofile="${delivery.directory}" force="true" />
+                                    <copy todir="${delivery.directory}/modules">
+                                        <fileset dir="${app.build.directory}/dependency" />
+                                        <fileset file="${app.build.directory}/*.jar" />
+                                    </copy>
+                                    <copy todir="${delivery.directory}">
+                                        <fileset dir="${app.build.directory}/resources" />
+                                    </copy>
+                                    <zip basedir="${delivery.directory}/.." includes="${delivery.name}/**/*" destfile="${delivery.directory}.zip" />
+                                </target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.alex1304.botrino</groupId>
+                <artifactId>botrino-api</artifactId>
+                <version>${botrino.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alex1304.botrino</groupId>
+                <artifactId>botrino-command</artifactId>
+                <version>${botrino.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.2.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.immutables</groupId>
+                <artifactId>bom</artifactId>
+                <version>${immutables.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- TEMPORARY -->
+            <dependency>
+                <groupId>com.discord4j</groupId>
+                <artifactId>discord4j-core</artifactId>
+                <version>3.2.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.discord4j</groupId>
+                <artifactId>discord-json</artifactId>
+                <version>1.6.5-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.discord4j</groupId>
+                <artifactId>discord-json-api</artifactId>
+                <version>1.6.5-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.discord4j</groupId>
+                <artifactId>discord-json-encoding</artifactId>
+                <version>1.6.5-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
