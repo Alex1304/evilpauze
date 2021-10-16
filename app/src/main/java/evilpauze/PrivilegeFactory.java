@@ -1,8 +1,8 @@
 package evilpauze;
 
 import botrino.api.config.ConfigContainer;
-import botrino.command.privilege.Privilege;
-import botrino.command.privilege.Privileges;
+import botrino.interaction.privilege.Privilege;
+import botrino.interaction.privilege.Privileges;
 import com.github.alex1304.rdi.finder.annotation.RdiFactory;
 import com.github.alex1304.rdi.finder.annotation.RdiService;
 import discord4j.common.util.Snowflake;
@@ -28,11 +28,5 @@ public final class PrivilegeFactory {
 
     public Privilege staff() {
         return headStaff().or(Privileges.checkRoles(roles -> roles.contains(Snowflake.of(config.staffRoleId()))));
-    }
-
-    public Privilege streamer() {
-        return staff().or(Privileges.checkRoles(roles -> roles.stream()
-                .map(Snowflake::asLong)
-                .anyMatch(config.streamerRoleIds()::contains)));
     }
 }

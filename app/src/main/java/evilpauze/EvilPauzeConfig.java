@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.immutables.value.Value;
 
-import java.util.Set;
-
 @ConfigEntry("evilpauze")
 @Value.Immutable
 @JsonDeserialize(as = ImmutableEvilPauzeConfig.class)
@@ -29,12 +27,6 @@ public interface EvilPauzeConfig {
 
     @JsonProperty("cooldown_message")
     String cooldownMessage();
-
-    @JsonProperty("streamer_role_ids")
-    Set<Long> streamerRoleIds();
-
-    @JsonProperty("stream_notification_role_id")
-    long streamNotificationRoleId();
 
     @JsonProperty("staff_role_id")
     long staffRoleId();

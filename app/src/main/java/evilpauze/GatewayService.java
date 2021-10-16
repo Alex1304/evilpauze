@@ -71,7 +71,6 @@ public final class GatewayService {
                 .filter(__ -> msgEvent.getMessage().getContent().equals(config.verificationMessage()))
                 .flatMap(__ -> msgEvent.getMessage().getChannel()
                         .filter(channel -> channel.getId().asLong() == config.verificationChannelId())
-                        .doOnNext(channel -> LOGGER.debug("Channel data: {}", channel))
                         .flatMap(channel -> msgEvent.getMessage().getAuthorAsMember()
                                 .filter(member -> !member.getRoleIds().contains(Snowflake.of(config.memberRoleId())))
                                 .map(member -> Tuples.of(channel, member))))
@@ -87,14 +86,14 @@ public final class GatewayService {
         final var memberJoin = gateway.on(MemberJoinEvent.class, joinEvent -> Mono.just(joinEvent)
                 .filter(event -> event.getGuildId().asLong() == config.gdServerId())
                 .flatMap(event -> gateway
-                .getChannelById(Snowflake.of(config.verificationChannelId()))
-                .ofType(TextChannel.class)
-                .delayElement(Duration.ofSeconds(1))
-                .flatMap(channel -> channel
-                        .createMessage(joinEvent.getMember().getMention() +" Welcome to the server!")
-                        .withEmbed(EmbedCreateSpec.create()
-                                .withTitle("Verify yourself")
-                                .withDescription(config.welcomeMessage())))));
+                        .getChannelById(Snowflake.of(config.verificationChannelId()))
+                        .ofType(TextChannel.class)
+                        .delayElement(Duration.ofSeconds(1))
+                        .flatMap(channel -> channel
+                                .createMessage(joinEvent.getMember().getMention() + " Welcome to the server!")
+                                .withEmbeds(EmbedCreateSpec.create()
+                                        .withTitle("Verify yourself")
+                                        .withDescription(config.welcomeMessage())))));
 
         Mono.when(messageCreate, memberJoin).subscribe(null,
                 t -> LOGGER.error("Event listener error", t),

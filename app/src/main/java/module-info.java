@@ -4,7 +4,7 @@ import botrino.api.annotation.BotModule;
 open module evilpauze {
 
     requires botrino.api;
-    requires botrino.command;
+    requires botrino.interaction;
     requires org.mongodb.driver.reactivestreams;
     requires org.immutables.criteria.common;
     requires org.immutables.criteria.mongo;

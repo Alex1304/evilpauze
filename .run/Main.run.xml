@@ -2,7 +2,7 @@
   <configuration default="false" name="Main" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="evilpauze.Main" />
     <module name="evilpauze-app" />
-    <option name="VM_PARAMETERS" value="--add-modules=ALL-MODULE-PATH -cp ." />
+    <option name="VM_PARAMETERS" value="--add-modules=ALL-MODULE-PATH -cp . -p $MODULE_DIR$/target/dependency:$MODULE_DIR$/target/classes" />
     <option name="WORKING_DIRECTORY" value="$USER_HOME$/testing/botrino/evilpauze-dev" />
     <method v="2">
       <option name="Make" enabled="true" />

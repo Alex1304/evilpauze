@@ -1,14 +1,16 @@
 package evilpauze;
 
-import botrino.command.CommandContext;
-import botrino.command.CommandErrorHandler;
-import botrino.command.privilege.PrivilegeException;
-import reactor.core.publisher.Mono;
+import botrino.interaction.InteractionErrorHandler;
+import botrino.interaction.context.InteractionContext;
+import botrino.interaction.privilege.PrivilegeException;
+import org.reactivestreams.Publisher;
 
-public class EvilPauzeCommandErrorHandler implements CommandErrorHandler {
+public class EvilPauzeCommandErrorHandler implements InteractionErrorHandler {
 
     @Override
-    public Mono<Void> handlePrivilege(PrivilegeException e, CommandContext ctx) {
-        return ctx.channel().createMessage("You don't have permission to use this command.").then();
+    public Publisher<?> handlePrivilege(PrivilegeException e, InteractionContext ctx) {
+        return ctx.event()
+                .createFollowup("You don't have permission to use this command.")
+                .withEphemeral(true);
     }
 }

@@ -14,23 +14,22 @@
             "en"
         ]
     },
-    "command": {
-        "prefix": "+"
+    "interaction": {
+        "application_commands_guild_id": 398627612299362304,
+        "default_ack_mode": "defer_ephemeral"
     },
     "mongodb": {
         "database_name": "evilpauze",
         "connection_string": "mongodb://localhost:27017"
     },
     "evilpauze": {
-        "gd_server_id": 0,
-        "verification_channel_id": 0,
-        "member_role_id": 0,
+        "gd_server_id": 398627612299362304,
+        "verification_channel_id": 665748479657902117,
+        "member_role_id": 427868129331511307,
         "verification_message": "verify me",
-        "welcome_message": "Please take five minutes to read over <#671228366606696468>, <#714663070169038879> and <#662753822921326592>, then reply in this channel with `verify me` to enter the server!\n\nIf you are having issues with the verification process, please contact a staff member in DMs so we can verify you manually.",
+        "welcome_message": "Please take five minutes to read over <#814865122639740948>, <#814865357110116389> and <#856560182753361970>, then reply in this channel with `verify me` to enter the server!\\n\\nIf you are having issues with the verification process, please contact a staff member in DMs so we can verify you manually.",
         "cooldown_message": "We consider five minutes to be the minimum time you need to properly acknowledge the information channel and the server rules.",
-        "streamer_role_ids": [],
-        "stream_notification_role_id": 0,
-        "staff_role_id": 0,
-        "head_staff_role_id": 0
+        "staff_role_id": 427865738099818512,
+        "head_staff_role_id": 611791784829255680
     }
 }
