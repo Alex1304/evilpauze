@@ -68,7 +68,7 @@ public final class GatewayService {
 
     public void start() {
         final var messageCreate = gateway.on(MessageCreateEvent.class, msgEvent -> Mono.just(msgEvent)
-                .filter(__ -> msgEvent.getMessage().getContent().equals(config.verificationMessage()))
+                .filter(__ -> msgEvent.getMessage().getContent().equalsIgnoreCase(config.verificationMessage()))
                 .flatMap(__ -> msgEvent.getMessage().getChannel()
                         .filter(channel -> channel.getId().asLong() == config.verificationChannelId())
                         .flatMap(channel -> msgEvent.getMessage().getAuthorAsMember()
